@@ -10,10 +10,14 @@ class TabFileParser(object):
 
     def parse_sentences(self):
         sentence = []
+        last_element = self.file_lines[-1]
         for line in self.file_lines:
             if line == "\n":
                 self.sentences.append(sentence)
                 sentence = []
+            elif line == last_element:
+                sentence.append(line)
+                self.sentences.append(sentence)
             else:
                 sentence.append(line)
         self.file_lines = None
