@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-from twisted.test.myrebuilder1 import A
 import unittest
 
 from accuracy_meter import *
@@ -24,22 +23,22 @@ class AccuracyMeterTest(unittest.TestCase):
 
 class TabFileParserTest(unittest.TestCase):
     expected_first_sentence = ["Ведь\tPART\t7\tогранич\n", "текст\tS.m.nom.sg\t7\tпредик\n",
-                                "закона\tS.gen.m.sg\t2\tквазиагент\n", "в\tPR\t7\tобст\n", "этом\tA.m.prep.sg\t6\tопред\n",
-                                "случае\tS.m.prep.sg\t4\tпредл\n", "остается\tV.3p.real.sg\t0\tROOT\n",
-                                "прежним\tA.ins.m.sg\t7\tприсвяз\n"]
+                               "закона\tS.gen.m.sg\t2\tквазиагент\n", "в\tPR\t7\tобст\n",
+                               "этом\tA.m.prep.sg\t6\tопред\n",
+                               "случае\tS.m.prep.sg\t4\tпредл\n", "остается\tV.3p.real.sg\t0\tROOT\n",
+                               "прежним\tA.ins.m.sg\t7\tприсвяз\n"]
     expected_last_sentence = ["Как\tADV\t2\tобст\n", "повернешь\tV.2p.real.sg\t0\tROOT\n"]
 
     def test_parseSentencesFirstSentence(self):
         parser = TabFileParser()
-        parser.read_lines(expected_path)
-        parser.parse_sentences()
+        parser.parse_sentences(expected_path)
 
         self.assertEquals(self.expected_first_sentence, parser.sentences[0])
 
     def test_parseSentencesLastSentence(self):
         parser = TabFileParser()
-        parser.read_lines(expected_path)
-        parser.parse_sentences()
+        parser.parse_sentences(expected_path)
 
         self.assertEquals(self.expected_last_sentence, parser.sentences[-1])
+
 
