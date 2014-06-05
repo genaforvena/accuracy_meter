@@ -1,0 +1,16 @@
+Ведь	PART	7	огранич
+текст	S.m.nom.sg	7	предик
+закона	S.gen.m.sg	2	квазиагент
+в	PR	7	обст
+этом	A.m.prep.sg	6	опред
+случае	S.m.prep.sg	4	предл
+остается	V.3p.real.sg	0	ROOT
+прежним	A.ins.m.sg	7	присвяз
+
+Впрочем	ADV	4	вводн
+паниковать	VINF	4	предик
+не	PART	4	огранич
+стоит	V.3p.real.sg	0	ROOT
+
+Как	ADV	2	обст
+повернешь	V.2p.real.sg	0	ROOT
