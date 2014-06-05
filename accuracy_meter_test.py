@@ -9,13 +9,13 @@ now_path = "test_data/now.txt"
 
 class AccuracyMeterTest(unittest.TestCase):
     def test_compareShouldReturn100PercentForExactMatch(self):
-        meter = AccuracyMeter()
+        meter = SentenceComarator()
         result = meter.compare(expected_path, expected_path)
 
         self.assertEquals(1, result)
 
     def test_comparePartlyEqualFilesShouldReturnCorrectNumber(self):
-        meter = AccuracyMeter()
+        meter = SentenceComarator()
         result = meter.compare(expected_path, now_path)
 
         self.assertEquals(0.75, result)

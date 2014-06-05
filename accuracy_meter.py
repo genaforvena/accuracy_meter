@@ -1,11 +1,13 @@
 # -*- coding: utf8 -*-
-import sqlite3
+import utils
 
 DB_NAME = "corpus.db"
 
 
 class AccuracyMeter(object):
-    def __init__(self):
+    pass
+
+    def compare(self):
         pass
 
 
@@ -28,36 +30,34 @@ class TabFileParser(object):
                 else:
                     sentence.append(line)
 
-    def save_sentences_to_db(self, db_name):
-        dbHelper = DbHelper(db_name)
-        dbHelper.create_table()
+    def save_sentences_to_db(self, table_name):
+        dbhelper = DbHelper()
+        dbhelper.create_table()
         for (sentence_number, sentence) in enumerate(self.sentences):
             for line in sentence:
-                dbHelper.write_line_to_db(sentence_number, line)
+                dbhelper.write_line_to_db(table_name, sentence_number, line)
+        dbhelper.close()
 
 
+class SentenceComparator(object):
+    # This should be much more complex.
+    # Acts more like a stub for now
+    def __init__(self):
+        self.matches = 0
+        self.checked = 0
 
-class DbHelper(object):
-    def __init__(self, table_name):
-        self.conn = sqlite3.connect(DB_NAME)
-        self.table_name = table_name
+    def compare(self, table1, table2):
+        dbhelper = DbHelper()
+        for i in range(dbhelper.get_number_of_sentences(table1)):
+            self._compare_sentences()
+        return self._get_percentage()
 
-    def create_table(self):
-        query = "CREATE TABLE IF NOT EXISTS %s (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, SENTENCE INT NOT NULL, FORM CHAR(50) NOT NULL, POSTAG CHAR(50) NOT NULL, HEAD INT, DEPREL CHAR(50));" % self.table_name
-        self.conn.execute(query)
+    def _get_percentage(self):
+        return long(self.matches / self.checked)
 
-    def write_line_to_db(self, number_of_sentence, line_raw):
-        line = line_raw.split("\t")
-        query = 'INSERT INTO %s (SENTENCE, FORM, POSTAG, HEAD, DEPREL) VALUES (%s, "%s", "%s", %s, "%s");' % (self.table_name, number_of_sentence, line[0], line[1], line[2], line[3].rstrip())
-        self.conn.cursor().execute(query)
-        self.conn.commit()
-
-    def get_sentence(self, sentence_number):
-        query = "SELECT FORM, POSTAG, HEAD, DEPREL FROM %s WHERE SENTENCE=%s;" % (self.table_name, sentence_number)
-        return self.conn.execute(query)
-
-    def close(self):
-        self.conn.close()
-
-    if __name__ == "__main__":
+    def _compare_sentences(self):
         pass
+
+
+if __name__ == "__main__":
+    pass
