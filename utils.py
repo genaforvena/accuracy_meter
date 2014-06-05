@@ -1,15 +1,16 @@
 # -*- coding: utf8 -*-
 import sqlite3
 
-from accuracy_meter import DB_NAME
+
 
 
 class DbHelper(object):
     def __init__(self):
+        from accuracy_meter import DB_NAME
         self.conn = sqlite3.connect(DB_NAME)
 
-    def create_table(self):
-        query = "CREATE TABLE IF NOT EXISTS %s (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, SENTENCE INT NOT NULL, FORM CHAR(50) NOT NULL, POSTAG CHAR(50) NOT NULL, HEAD INT, DEPREL CHAR(50));" % self.table_name
+    def create_table(self, table):
+        query = "CREATE TABLE IF NOT EXISTS %s (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, SENTENCE INT NOT NULL, FORM CHAR(50) NOT NULL, POSTAG CHAR(50) NOT NULL, HEAD INT, DEPREL CHAR(50));" % table
         self.conn.execute(query)
 
     def write_line_to_db(self, table, number_of_sentence, line_raw):
@@ -21,7 +22,13 @@ class DbHelper(object):
 
     def get_sentence(self, table, sentence_number):
         query = "SELECT FORM, POSTAG, HEAD, DEPREL FROM %s WHERE SENTENCE=%s;" % (table, sentence_number)
-        return self.conn.execute(query)
+        cursor = self.conn.execute(query)
+
+        sentence = []
+        for row in cursor:
+            sentence.append(row)
+        return sentence
+
 
     def get_number_of_sentences(self, table):
         query = "SELECT MAX(SENTENCE) FROM %s;" % table
@@ -29,11 +36,3 @@ class DbHelper(object):
 
     def close(self):
         self.conn.close()
-
-    def open_and_close(self, function):
-        def wrapper(function):
-            self.conn = sqlite3.connect(DB_NAME)
-            function()
-            self.conn.close()
-
-        return wrapper
