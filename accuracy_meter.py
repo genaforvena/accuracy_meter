@@ -1,23 +1,29 @@
 # -*- coding: utf8 -*-
+import argparse
 from utils import DbHelper
 
 DB_NAME = "corpus.db"
 
+def get_command_line_options():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('expected')
+    parser.add_argument('actual')
+    return parser.parse_args()
 
 class AccuracyMeter(object):
     def __init__(self):
-        self.tab_parser = TabFileParser()
-        self.comparator = SentenceComparator()
+        self._tab_parser = TabFileParser()
+        self._comparator = SentenceComparator()
 
     def _process_file(self, file_path):
         table_name = "".join([x for x in file_path.split("/")[-1] if x.isalpha()])
-        self.tab_parser.parse_sentences(file_path)
-        self.tab_parser.save_sentences_to_db(table_name)
+        self._tab_parser.parse_sentences(file_path)
+        self._tab_parser.save_sentences_to_db(table_name)
         return table_name
 
     def compare(self, file1, file2):
         [table1, table2] = map(self._process_file, [file1, file2])
-        return self.comparator.compare(table1, table2)
+        return self._comparator.compare(table1, table2)
 
 
 class TabFileParser(object):
@@ -79,4 +85,7 @@ def are_same(sentence1, sentence2):
 
 
 if __name__ == "__main__":
-    pass
+    args = get_command_line_options()
+    meter = AccuracyMeter()
+    print "Match rate is ", meter.compare(args.expected, args.actual)
+
