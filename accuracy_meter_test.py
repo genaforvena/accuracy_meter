@@ -23,6 +23,7 @@ class AccuracyMeterTest(unittest.TestCase):
 
     def tearDown(self):
         from accuracy_meter import DB_NAME
+
         try:
             os.remove(DB_NAME)
         except OSError:

@@ -2,11 +2,10 @@
 import sqlite3
 
 
-
-
 class DbHelper(object):
     def __init__(self):
         from accuracy_meter import DB_NAME
+
         self.conn = sqlite3.connect(DB_NAME)
 
     def create_table(self, table):
