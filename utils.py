@@ -29,10 +29,10 @@ class DbHelper(object):
             sentence.append(row)
         return sentence
 
-
     def get_number_of_sentences(self, table):
         query = "SELECT MAX(SENTENCE) FROM %s;" % table
-        return int(self.conn.execute(query))
+        cursor = self.conn.execute(query)
+        return int(cursor.fetchall()[0][0] + 1)
 
     def close(self):
         self.conn.close()

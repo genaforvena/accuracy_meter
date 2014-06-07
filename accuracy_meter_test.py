@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import os
 import unittest
 
 from accuracy_meter import *
@@ -19,6 +20,13 @@ class AccuracyMeterTest(unittest.TestCase):
         result = meter.compare(expected_path, now_path)
 
         self.assertEquals(0.75, result)
+
+    def tearDown(self):
+        from accuracy_meter import DB_NAME
+        try:
+            os.remove(DB_NAME)
+        except OSError:
+            pass
 
 
 class TabFileParserTest(unittest.TestCase):

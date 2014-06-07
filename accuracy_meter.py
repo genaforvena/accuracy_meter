@@ -9,14 +9,15 @@ class AccuracyMeter(object):
         self.tab_parser = TabFileParser()
         self.comparator = SentenceComparator()
 
-    def process_file(self, file):
-        db_name = file.split("/")[-1]
-        self.tab_parser.parse_sentences(file)
-        self.tab_parser.save_sentences_to_db(db_name)
-        return db_name
+    def _process_file(self, file_path):
+        table_name = "".join([x for x in file_path.split("/")[-1] if x.isalpha()])
+        self.tab_parser.parse_sentences(file_path)
+        self.tab_parser.save_sentences_to_db(table_name)
+        return table_name
 
     def compare(self, file1, file2):
-        map(self.comparator.compare, map(self.process_file, [file1, file2]))
+        [table1, table2] = map(self._process_file, [file1, file2])
+        return self.comparator.compare(table1, table2)
 
 
 class TabFileParser(object):
@@ -45,6 +46,10 @@ class TabFileParser(object):
             for line in sentence:
                 dbhelper.write_line_to_db(table_name, sentence_number, line)
         dbhelper.close()
+        self.reinit()
+
+    def reinit(self):
+        self.sentences = []
 
 
 class SentenceComparator(object):
@@ -63,7 +68,7 @@ class SentenceComparator(object):
         return self._get_percentage()
 
     def _get_percentage(self):
-        return long(self.matches / self.checked)
+        return float(self.matches) / float(self.checked)
 
 
 def are_same(sentence1, sentence2):
