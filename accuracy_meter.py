@@ -59,6 +59,7 @@ class TabFileParser(object):
 
 
 class SentenceComparator(object):
+    # TODO
     # This should be much more complex.
     # Acts more like a stub for now
     def __init__(self):
