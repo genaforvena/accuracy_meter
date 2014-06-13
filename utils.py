@@ -33,5 +33,10 @@ class DbHelper(object):
         cursor = self.conn.execute(query)
         return int(cursor.fetchall()[0][0] + 1)
 
+    def get_number_of_words(self, table):
+        query = "SELECT MAX(ID) FROM %s;" % table
+        cursor = self.conn.execute(query)
+        return int(cursor.fetchall()[0][0])
+
     def close(self):
         self.conn.close()

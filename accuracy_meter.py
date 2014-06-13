@@ -68,18 +68,21 @@ class SentenceComparator(object):
 
     def compare(self, table1, table2):
         dbhelper = DbHelper()
-        self.checked = dbhelper.get_number_of_sentences(table1)
+        self.checked = dbhelper.get_number_of_words(table1)
         for i in range(self.checked):
-            if are_same(dbhelper.get_sentence(table1, i), dbhelper.get_sentence(table2, i)):
-                self.matches += 1
+            sentence1 = dbhelper.get_sentence(table1, i)
+            sentence2 = dbhelper.get_sentence(table2, i)
+            for (index, word) in enumerate(sentence1):
+                if are_same(sentence2[index], word):
+                    self.matches += 1
         return self._get_percentage()
 
     def _get_percentage(self):
         return float(self.matches) / float(self.checked)
 
 
-def are_same(sentence1, sentence2):
-    if sentence1 == sentence2:
+def are_same(word1, word2):
+    if word1 == word2:
         return True
     else:
         return False

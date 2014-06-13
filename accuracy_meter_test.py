@@ -19,7 +19,7 @@ class AccuracyMeterTest(unittest.TestCase):
         meter = AccuracyMeter()
         result = meter.compare(expected_path, now_path)
 
-        self.assertEquals(0.75, result)
+        self.assertAlmostEqual(0.9545454545454546, result)
 
     def tearDown(self):
         from accuracy_meter import DB_NAME
@@ -36,7 +36,7 @@ class TabFileParserTest(unittest.TestCase):
                                "этом\tA.m.prep.sg\t6\tопред\n",
                                "случае\tS.m.prep.sg\t4\tпредл\n", "остается\tV.3p.real.sg\t0\tROOT\n",
                                "прежним\tA.ins.m.sg\t7\tприсвяз\n"]
-    expected_last_sentence = ["Как\tADV\t2\tобст\n", "повернешь\tV.2p.real.sg\t0\tROOT\n"]
+    expected_last_word = "объявил\tV.m.real.sg\t0\tROOT"
 
     def test_parseSentencesFirstSentence(self):
         parser = TabFileParser()
@@ -48,6 +48,6 @@ class TabFileParserTest(unittest.TestCase):
         parser = TabFileParser()
         parser.parse_sentences(expected_path)
 
-        self.assertEquals(self.expected_last_sentence, parser.sentences[-1])
+        self.assertEquals(self.expected_last_word, parser.sentences[-1][-1])
 
 
